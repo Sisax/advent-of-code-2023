@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { EOL } from 'os';
 
-const fileContent = fs.readFileSync('./day_1_input.txt', 'utf-8');
+const fileContent = fs.readFileSync('./inputs/day_1_input.txt', 'utf-8');
 
 const rows = fileContent.split(EOL);
 let result = 0;
@@ -18,7 +18,7 @@ console.log("Yupppee", result);
 
 function getRealCalibrationRow(row: string): string {
   const numberWords = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-  const wordValues = {
+  const wordValues: {[key: string]: string} = {
     'one': '1',
     'two': '2',
     'three': '3',
