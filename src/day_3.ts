@@ -1,10 +1,3 @@
-// ways to do:
-// 1. vegigiteralni es adott szamnal megtalalni a szam hatarait es megnezni hogy van-e korulotte mas mint pont vagy szam
-// 2. vegigiteralni es lementeni egy arrayben a szimbolumoknak a 'legalis' koordinatakat, majd vegigiteralni megegyszer, es legalis koordinatakat erinto szamokat lementeni
-// 3. vegigiteralni, es lementeni a szamokat a kornyezo koordinatakkal objectben, majd vegigiteralni megegyszer a szimbolumokat nezve, es megnezni vannak-e szamok a koordinatajanal
-
-// 1. way
-
 import * as fs from 'fs';
 import { EOL } from 'os';
 

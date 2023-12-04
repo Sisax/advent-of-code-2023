@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["ES2021.String"],
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "target": "ES2022"
   },
   "include": ["src/**/*"]
 }
