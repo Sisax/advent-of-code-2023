@@ -1,6 +1,11 @@
 import * as fs from "fs";
 import { EOL } from "os";
 
+// part 2 plans: replace all loop tiles with X, traverse the matrix and after odd
+// numbered and before even numbererd pipes replace all inner tiles with O
+// (just for console fun, at this point you could even count it without replacing them)
+
+// where i left: original rows are passed by reference: they dont have the pipes anymore
 const fileContent = fs.readFileSync("../inputs/day_10_input.txt", "utf-8");
 const rows = fileContent.split(EOL);
 // fromOrigin: [vertical Y, horizontal X]
@@ -80,11 +85,55 @@ const legalNeighbours = {
 
 const main = (rows: string[]): void => {
   const startingIndex = findStartingIndex(rows);
-  const result = getStepsByTraversingMatrix(rows, startingIndex);
+  const splitRows = rows.map((row) => row.split(""));
+  const modifiedLoop = getStepsAndPaintLoop(splitRows, startingIndex);
+  const paintedLoop = paintEnclosedTiles(modifiedLoop, rows);
+  console.log(paintedLoop);
+  let result = 0;
+  paintedLoop.forEach((tileRow) => {
+    tileRow.forEach((tile) => {
+      if (tile == "O") {
+        result++;
+      }
+    });
+  });
+  console.log(result);
 };
 
-const getStepsByTraversingMatrix = (
-  rows: string[],
+const paintEnclosedTiles = (
+  tileMap: string[][],
+  originalMap: string[]
+): string[][] => {
+  console.log(originalMap);
+  return tileMap.map((tileRow, indexY) => {
+    let lastVisitedLoopTile: "even" | "odd" = "even";
+    return tileRow.map((tile, indexX) => {
+      if (tile !== "X") {
+        const tilesOnLeft = originalMap[indexY].split("").slice(0, indexX);
+        const tilesOnRight = originalMap[indexY].split("").slice(indexX + 1);
+
+        const pipeCountOnLeft = tilesOnLeft.filter(
+          (value) => value == "|"
+        ).length;
+        const pipeCountOnRight = tilesOnRight.filter(
+          (value) => value == "|"
+        ).length;
+
+        if (pipeCountOnLeft == 0 || pipeCountOnRight == 0) {
+          return tile;
+        } else if (pipeCountOnLeft % 2 !== 0) {
+          // if there are no horizontal lines in the loop
+          return "O";
+        }
+      }
+
+      return tile;
+    });
+  });
+};
+
+const getStepsAndPaintLoop = (
+  rows: string[][],
   startingIndex: [number, number]
 ) => {
   // i need the indices, symbol and direction of one of the first legal moves
@@ -112,6 +161,8 @@ const getStepsByTraversingMatrix = (
       rows
     );
 
+    rows[currentIndexY][currentIndexX] = "X";
+
     currentIndexX = nextIndexX;
     currentIndexY = nextIndexY;
     currentSymbol = nextSymbol;
@@ -121,6 +172,8 @@ const getStepsByTraversingMatrix = (
   }
 
   console.log("The farthest from the start is: ", stepCount / 2);
+
+  return rows;
 };
 
 const getNextStep = (
@@ -128,7 +181,7 @@ const getNextStep = (
   indexX: number,
   symbol: string,
   originMove: string,
-  rows: string[]
+  rows: string[][]
 ): {
   nextIndexX: number;
   nextIndexY: number;
@@ -153,7 +206,7 @@ const getNextStep = (
 };
 
 const getFistLegalMove = (
-  rows: string[],
+  rows: string[][],
   startingIndexY: number,
   startingIndexX: number
 ): { indexY: number; indexX: number; symbol: string; originMove: string } => {
