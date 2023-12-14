@@ -65,7 +65,7 @@ const main = (notes: string[][]) => {
 
           indexDiff++;
         }
-        if (isMirrored) {
+        if (isMirrored && smudgeFound) {
           rowsAboveMirror += currentIndex + 1;
           numberOfHorizontal++;
           break;
@@ -142,7 +142,7 @@ const main = (notes: string[][]) => {
 
           indexDiff++;
         }
-        if (isMirrored) {
+        if (isMirrored && smudgeFound) {
           columnsLeftOfMirror += currentIndex + 1;
           numberOfVertical++;
           break;
