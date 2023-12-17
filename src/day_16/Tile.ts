@@ -5,12 +5,14 @@ export default class Tile {
   private _i: number;
   private _j: number;
   public isEnergized: boolean;
+  public tilePassedBy: string[];
 
   constructor(tile: string, location: [number, number]) {
     this._tile = tile;
     this._i = location[0];
     this._j = location[1];
     this.isEnergized = false;
+    this.tilePassedBy = [];
   }
 
   public get tile(): string {
@@ -78,8 +80,8 @@ export default class Tile {
         if (light.direction === "right")
           result.push([light.row, light.col + 1, "right"]);
         if (light.direction === "down" || light.direction === "up") {
-          result.push([light.row, light.col - 1, "up"]);
-          result.push([light.row, light.col + 1, "down"]);
+          result.push([light.row, light.col - 1, "left"]);
+          result.push([light.row, light.col + 1, "right"]);
         }
         break;
       default:

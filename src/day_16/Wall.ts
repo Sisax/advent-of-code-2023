@@ -24,22 +24,15 @@ export default class Wall {
     return this.tiles.filter((tile) => tile.i === row && tile.j === col)[0];
   };
 
-  public printWall = () => {
-    let result: string[][] = [];
-
+  public getNumberOfEnergizedTiles = (): number => {
     let points = 0;
+
     this.tiles.forEach((tile) => {
       if (tile.isEnergized) {
         points++;
       }
-      if (result[tile.i] === undefined) {
-        result[tile.i] = [];
-      }
-      result[tile.i][tile.j] = tile.isEnergized ? "#" : ".";
     });
-    console.log(this.tiles);
-    console.log("p", points);
 
-    console.log(result.join("\n"));
+    return points;
   };
 }
